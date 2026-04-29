@@ -4,10 +4,13 @@ import shutil
 from tqdm import tqdm
 
 
-def convert(cwd, file):
+def convert(cwd, file, dir):
+
+    folder = cwd/ dir #folder -> output folder, dir -> dir name
+    folder.mkdir(exist_ok=True)
     
     JSON_PATH = cwd / file
-    DEST_PATH=cwd
+    DEST_PATH=folder
     
     # Load COCO data
     with open(JSON_PATH, 'r') as f:
