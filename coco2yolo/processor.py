@@ -2,10 +2,33 @@ import json
 import os
 import shutil
 from tqdm import tqdm
+import importlib.util
+from pathlib import Path
+
+#----------------------- MAP MODULE --------------------------- 
+
+def load_user_function(script_path):
+    script_path = Path(script_path)
+
+    spec = importlib.util.spec_from_file_location(
+        "user_module",
+        script_path
+    )
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    return module.map   # expected function name
 
 
-def convert(cwd, file, dir):
+#----------------------- MAP MODULE ---------------------------
 
+def convert(cwd, file, dir, map_func):
+
+    
+    user_func = load_user_function(cwd/map_func) if map_func else None
+
+    
     folder = cwd/ dir #folder -> output folder, dir -> dir name
     folder.mkdir(exist_ok=True)
     
@@ -49,6 +72,7 @@ def convert(cwd, file, dir):
                     normalized_poly.append(str(round(coord / h, 6))) # y
 
             # Format: <class_id> <x1> <y1> <x2> <y2> ...
+            category_id = user_func(category_id) if user_func else category_id
             line = f"{category_id} {' '.join(normalized_poly)}\n"
 
             with open(label_path, 'a') as f:
