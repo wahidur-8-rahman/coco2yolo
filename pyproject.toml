@@ -1,0 +1,15 @@
+[project]
+name = "coco2yolo"
+version = "0.1.0"
+description = "Convert standard COCO annotations to YOLO annotations."
+
+authors = [
+  {name="Wahidur Rahman"}
+]
+
+dependencies = [
+    "tqdm>=4.67.3"
+]
+
+[project.scripts]
+coco2yolo = "coco2yolo.cli:main"
