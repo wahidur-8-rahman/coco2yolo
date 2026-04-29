@@ -1,5 +1,5 @@
 import argparse
-from processor import convert
+from .processor import convert
 from pathlib import Path
 
 
